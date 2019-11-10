@@ -7,7 +7,8 @@ class Game extends React.Component {
     super(props);
     this.state = {
       homeTeam: { key: "homeTeam", score: 0, shotsTaken: 0 },
-      awayTeam: { key: "awayTeam", score: 0, shotsTaken: 0 }
+      awayTeam: { key: "awayTeam", score: 0, shotsTaken: 0 },
+      resetCount: 0
     };
   }
   handleShoot = teamKey => {
@@ -29,14 +30,23 @@ class Game extends React.Component {
       }));
     }
   };
+
+  handleReset = event => {
+    this.setState(state => ({
+      homeTeam: { key: "homeTeam", score: 0, shotsTaken: 0 },
+      awayTeam: { key: "awayTeam", score: 0, shotsTaken: 0 },
+      resetCount: state.resetCount + 1
+    }));
+  };
+
   render() {
     return (
       <div className="container">
-        <h1 className="banner">Welcome to {this.props.venue}</h1>
+        <h1>Welcome to {this.props.venue}</h1>
         <div className="teams">
           <Team
             name="dr steven brule"
-            img="https://img1.looper.com/img/uploads/2017/08/The_untold_truth_of_Dr._Steve_Brule.jpg"
+            img="https://pbs.twimg.com/profile_images/3543879283/1509e34005183da5ea4eb29150f341e5_400x400.jpeg"
             shotsTaken={this.state.homeTeam.shotsTaken}
             score={this.state.homeTeam.score}
             handleShoot={() => {
@@ -57,6 +67,10 @@ class Game extends React.Component {
           homeTeamScore={this.state.homeTeam.score}
           awayTeamScore={this.state.awayTeam.score}
         />
+        <button className="reset-button" onClick={this.handleReset}>
+          Reset
+        </button>
+        {this.state.resetCount > 0 && <div>{this.state.resetCount}</div>}
       </div>
     );
   }
